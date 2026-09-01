@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100 Games</title>
+<style>
+body{background:#0a0a0f;color:#fff;font-family:Arial;margin:0}
+h1{text-align:center;padding:20px;background:linear-gradient(90deg,#7c3aed,#ec4899)}
+#grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px}
+@media(min-width:600px){#grid{grid-template-columns:repeat(4,1fr)}}
+.card{background:#1e1e2e;padding:20px 10px;border-radius:12px;text-align:center;font-weight:bold;border:1px solid #333;cursor:pointer}
+.card:hover{background:#7c3aed}
+#player{display:none;position:fixed;inset:0;background:#000;z-index:999;flex-direction:column}
+#player.active{display:flex}
+#bar{padding:12px;background:#111;display:flex;justify-content:space-between}
+#bar button{background:#7c3aed;color:#fff;border:0;padding:8px 16px;border-radius:20px}
+iframe{flex:1;border:0;width:100%}
+</style>
+</head>
+<body>
+<h1>🎮 100 MIND-BLOWING GAMES - TAP TO PLAY</h1>
+<div id="grid"></div>
+<div id="player"><div id="bar"><span id="gName"></span><button onclick="document.getElementById('player').classList.remove('active');document.getElementById('frame').src=''">CLOSE X</button></div><iframe id="frame" allowfullscreen></iframe></div>
+<script>
+const games=["Moto X3M","Slope","Retro Bowl","1v1.LOL","Shell Shockers","Paper.io 2","Hole.io","Agar.io","Slither.io","Krunker","2048","Tetris","Pac-Man","Snake","Flappy Bird","Doodle Jump","Cut The Rope","Fruit Ninja","Subway Surfers","Temple Run","Chess","Ludo","Checkers","Sudoku","Solitaire","Minesweeper","Tic Tac Toe","8 Ball Pool","Pool Master","Air Hockey","Drift Hunters","Drift Boss","Madalin Cars","Parking Jam","Traffic Racer","Hill Climb","Bike Race","Car Eats Car","Demolition Derby","Road Rash","Minecraft","BuildNow","Zombs Royale","Surviv.io","Diep.io","StarBlast","Wormax.io","Mope.io","Bonk.io","Goose Game","Basketball Stars","Football Legends","Soccer Skills","Tennis Open","Bowling Stars","Golf Orbit","Baseball Pro","Wrestle Bros","Boxing Random","Basket Random","Vex 7","Vex 6","Run 3","Geometry Dash","OvO","Fireboy Watergirl","Red Ball 4","Bob Robber","Super Mario","Sonic Game","Among Us","Poppy Playtime","Friday Night Funkin","GTA Simulator","Granny","Baldi Basics","Hello Neighbor","Scary Maze","Backrooms","Jeff Killer","Cookie Clicker","Popcat","Little Alchemy","Wordle","Crossword","Hangman","Typing Speed","Memory Game","Jigsaw Puzzle","Color Switch","Stack","Helix Jump","Paper Minecraft","Bloxd.io","CraftMine","Pixel Shooter","Rocket Soccer","Moto Rider","Car Simulator","Bus Simulator","Train Simulator","Airport Simulator","City Builder","Farm Simulator","Fish Eat Fish","Monster Truck","Zombie Shooter"];
+const urls=["https://www.motox3m.co/","https://slopeonline.online/","https://retrobowl.me/","https://1v1.lol/","https://shellshock.io/","https://paper-io.com/","https://hole-io.com/","https://agar.io/","https://slither.io/","https://krunker.io/","https://play2048.co/","https://tetris.com/play-tetris","https://www.google.com/logos/2010/pacman10-i.html","https://playsnake.org/","https://flappybird.io/","https://doodlejump.io/","https://cuttherope.net/","https://www.crazygames.com/game/fruit-ninja","https://poki.com/en/g/subway-surfers","https://poki.com/en/g/temple-run-2","https://www.chess.com/play/computer","https://ludoking.com/play/","https://www.247checkers.com/","https://sudoku.com/","https://www.solitr.com/","https://minesweeperonline.com/","https://playtictactoe.org/","https://www.8ballpoolonline.com/","https://8ballpool.com/","https://www.crazygames.com/game/air-hockey","https://drift-hunters.co/","https://driftboss1.com/","https://madalinstuntcars2.io/","https://www.crazygames.com/game/parking-jam","https://trafficracer.io/","https://www.crazygames.com/game/hill-climb-racing","https://bikerace.io/","https://www.crazygames.com/game/car-eats-car-2-deluxe","https://www.crazygames.com/game/demolition-derby","https://www.crazygames.com/game/moto-road-rash-3d","https://classic.minecraft.net/","https://buildnow.gg/","https://zombsroyale.io/","https://surviv.io/","https://diep.io/","https://starblast.io/","https://wormax.io/","https://mope.io/","https://bonk.io/","https://goosegame.io/","https://basketball-stars.com/","https://www.crazygames.com/game/football-legends","https://www.crazygames.com/game/soccer-skills-world-cup","https://www.crazygames.com/game/tennis-open-2022","https://www.crazygames.com/game/bowling-stars","https://www.crazygames.com/game/golf-orbit","https://www.crazygames.com/game/baseball-pro","https://wrestlebros.io/","https://boxingrandom.io/","https://basketrandom.io/","https://vex7.org/","https://vex-6.github.io/","https://run3.io/","https://geometrydash.io/","https://ovo-game.com/","https://fireboyandwatergirl.io/","https://www.crazygames.com/game/red-ball-4","https://bobtherobber.io/","https://supermario-game.com/","https://www.crazygames.com/game/sonic","https://amongus-online.net/","https://poppyplaytimeonline.com/","https://fnf-online.com/","https://www.crazygames.com/game/grand-theft-auto-simulator","https://granny-game.io/","https://baldibasics.io/","https://helloneighborgame.io/","https://www.crazygames.com/game/scary-maze","https://backrooms-game.io/","https://www.crazygames.com/game/jeff-the-killer","https://orteil.dashnet.org/cookieclicker/","https://popcat.click/","https://littlealchemy2.com/","https://www.nytimes.com/games/wordle/","https://www.boatloadpuzzles.com/playcrossword","https://www.hangmanwords.com/","https://www.typing.com/","https://www.helpfulgames.com/subjects/brain-training/memory.shtml","https://www.jigsawplanet.com/","https://colorswitch.io/","https://www.crazygames.com/game/stack","https://www.crazygames.com/game/helix-jump","https://www.crazygames.com/game/paper-minecraft","https://bloxd.io/","https://www.crazygames.com/game/craftmine","https://www.crazygames.com/game/pixel-shooter","https://www.crazygames.com/game/rocket-soccer-derby","https://www.crazygames.com/game/moto-rider-go","https://www.crazygames.com/game/car-simulator-arena","https://www.crazygames.com/game/bus-simulator","https://www.crazygames.com/game/train-simulator","https://www.crazygames.com/game/airport-simulator","https://www.crazygames.com/game/city-builder","https://www.crazygames.com/game/farm-simulator","https://www.crazygames.com/game/fish-eat-fish","https://www.crazygames.com/game/monster-truck","https://www.crazygames.com/game/zombie-shooter"];
+const grid=document.getElementById('grid');
+games.forEach((name,i)=>{
+let d=document.createElement('div');d.className='card';d.innerHTML=(i+1)+'. '+name;
+d.onclick=()=>{document.getElementById('gName').innerText=name;document.getElementById('frame').src=urls[i];document.getElementById('player').classList.add('active');};
+grid.appendChild(d);
+});
+</script>
+</body>
+</html>
